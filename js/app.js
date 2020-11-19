@@ -15,6 +15,7 @@ class UI {
     this.itemList = [];
     this.itemID = 0;
   }
+  
   //submit budget method
   submitBudgetForm() {
     const value = this.budgetInput.value;
@@ -31,6 +32,7 @@ class UI {
       this.showBalance();
     }
   }
+
   //show balence
   showBalance() {
     const expense = this.totalExpense();
@@ -49,6 +51,7 @@ class UI {
       this.balance.classList.add("showBlack");
     }
   }
+
   //submit expense form
   submitExpenseForm() {
     const expenseValue = this.expenseInput.value;
@@ -76,6 +79,7 @@ class UI {
       this.showBalance();
     }
   }
+
   //add expense
   addExpense(expense) {
     const div = document.createElement("div");
@@ -102,27 +106,32 @@ class UI {
     let total = 0;
     if (this.itemList.length > 0) {
       total = this.itemList.reduce(function (acc, curr) {
-        console.log(`${acc} and ${curr.amount}`);
+        // console.log(`${acc} and ${curr.amount}`);
         acc += curr.amount;
         return acc;
-      },0)
+      }, 0);
     }
     this.expenseAmount.textContent = total;
     return total;
   }
+
   //edit expense
   editExpense(element) {
     let id = parseInt(element.dataset.id);
     let parent = element.parentElement.parentElement.parentElement;
+
     //remove from dom
     this.expenseList.removeChild(parent);
+
     //remove from list
     let expense = this.itemList.filter(item => {
       return item.id === id;
     });
+
     //show value
     this.expenseInput.value = expense[0].title;
     this.amountInput.value = expense[0].amount;
+
     //remove from list
     let tempList = this.itemList.filter(item => {
       return item.id !== id;
@@ -134,12 +143,15 @@ class UI {
   deleteExpense(element) {
     let id = parseInt(element.dataset.id);
     let parent = element.parentElement.parentElement.parentElement;
+
     //remove from dom
     this.expenseList.removeChild(parent);
+
     //remove from list
     let tempList = this.itemList.filter(item => {
       return item.id !== id;
     })
+
     this.itemList = tempList;
     this.showBalance();
   }
@@ -157,10 +169,12 @@ function eventListeners() {
     ui.submitBudgetForm();
 
   });
+
   expenseForm.addEventListener("submit", function (event) {
     event.preventDefault();
     ui.submitExpenseForm();
   });
+
   expenseList.addEventListener("click", function (event) {
     if (event.target.parentElement.classList.contains('edit-icon')) {
       ui.editExpense(event.target.parentElement);
